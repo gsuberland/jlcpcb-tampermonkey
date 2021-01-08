@@ -1,6 +1,6 @@
 # JLCPCB Parts List Improvements (Tampermonkey Script)
 
-This is a tampermonkey script that pulls part data from [LCSC](https://lcsc.com/) into [JLCPCB part search](https://jlcpcb.com/parts/) results.
+This is a [tampermonkey](https://www.tampermonkey.net/) script that pulls part data from [LCSC](https://lcsc.com/) into [JLCPCB part search](https://jlcpcb.com/parts/) results.
 
 ## How does this improve things?
 
