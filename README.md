@@ -26,7 +26,7 @@ Much more useful!
 
 Here's some regular LCSC part results:
 
-![LCSC search - no script](lcsc_parts_no_script.png)
+![LCSC search - no script](lcsc_parts_without_script.png)
 
 Now here's the same results with the script enabled:
 
