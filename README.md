@@ -59,3 +59,7 @@ Part stock data fetched from JLCPCB is cached persistently in the browser for 24
 At the top of the scripts there's a `debugMode` variable. Set it to true and the script will dump a bunch of output to the console. See [this tampermonkey issue](https://github.com/Tampermonkey/tampermonkey/issues/561) for instructions on how to inpsect the requests being made from the script.
 
 If you run into trouble, open an issue. Can't promise much in terms of support but I'll do my best.
+
+## See also
+
+[Honza Mrázek](https://twitter.com/yaqwsx_cz) made [this really cool parametric search tool for JLCPCB](https://yaqwsx.github.io/jlcparts/). I'm probably just going to use that instead of JLCPCB's website from now on, because it's _so much more useful_.
