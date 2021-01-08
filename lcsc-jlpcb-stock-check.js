@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JLCPCB stock check for LCSC
 // @namespace    https://poly.nomial.co.uk/
-// @version      0.1
+// @version      0.2
 // @description  Fetches additional part data from LCSC on JLCPCB's parts list.
 // @homepage     https://github.com/gsuberland/jlcpcb-tampermonkey/
 // @downloadURL  https://raw.githubusercontent.com/gsuberland/jlcpcb-tampermonkey/main/lcsc-jlpcb-stock-check.js
@@ -557,6 +557,15 @@
         }
     };
 
+    var validatePartInfo = function(partInfo)
+    {
+        // some parts return pricing & stock data but aren't actually on the site
+        // these can be identified by some of their fields being null
+        if (!partInfo.componentName)
+            return false;
+        return true;
+    };
+
     /*
     Begin handlers
     */
@@ -567,7 +576,8 @@
         let partId = getProductPartNumberFromRow(elementRow);
         JLCPCB.API.getPartInfo(partId).then(function(partInfo) {
             let stockNumElement = element.querySelector(elementSettings.stockCell.stockNumElementSelector);
-            if (partInfo)
+            stockNumElement.setAttribute("data-for-part", partId);
+            if (partInfo && validatePartInfo(partInfo))
             {
                 if (partInfo.stockCount > 0)
                 {
@@ -594,7 +604,7 @@
         let partId = getProductPartNumberFromRow(elementRow);
         JLCPCB.API.getPartInfo(partId).then(function(partInfo) {
             let priceElement = element.querySelector(elementSettings.priceCell.priceElementSelector);
-            if (partInfo)
+            if (partInfo && validatePartInfo(partInfo))
             {
                 let showLeastNumber = false;
 
