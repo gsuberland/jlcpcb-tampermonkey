@@ -4,7 +4,7 @@ This repository contains [tampermonkey](https://www.tampermonkey.net/) scripts t
 
 The [JLCPCB Parts List Improvements](jlcpcb-parts-tampermonkey.js) script imports parametric part data from LCSC when you search the JLCPCB parts library. This gives you a bunch more information about how the parts when browsing JLCPCB.
 
-The [JLCPCB stock check for LCSC](lcsc-jlpcb-stock-check.js) script shows JLCPCB stock numbers, pricing, minimum quantity, and loss numbers on LCSC's search results. This helps you quickly see if parts you're looking at are available in LCSC's library.
+The [JLCPCB stock check for LCSC](lcsc-jlpcb-stock-check.js) script shows JLCPCB stock numbers, pricing, minimum quantity, and loss numbers on LCSC's search results. This helps you quickly see if parts you're looking at are available in JLCPCB's library.
 
 ## How do these scripts improve things?
 
