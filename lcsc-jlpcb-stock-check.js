@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JLCPCB stock check for LCSC
 // @namespace    https://poly.nomial.co.uk/
-// @version      0.3
+// @version      0.4
 // @description  Fetches additional part data from LCSC on JLCPCB's parts list.
 // @homepage     https://github.com/gsuberland/jlcpcb-tampermonkey/
 // @downloadURL  https://raw.githubusercontent.com/gsuberland/jlcpcb-tampermonkey/main/lcsc-jlpcb-stock-check.js
@@ -688,7 +688,7 @@ var initRowCells = function()
                 return false;
             }
             let cellElement = createPageElement("td", columnSettings[columnName].cellElementSettingsKey);
-            cellElement.innerHTML = '<div class="template-availability"><div class="avali-instock"><div class="in-stock"><div class="avali-stock-num" style="word-break: normal">...</div>' + /*'<div class="avali-stock-tip" style="word-break: normal">at&nbsp;JLC</div>*/  '</div></div></div>';
+            cellElement.innerHTML = '<div class="template-availability"><div class="avali-instock"><div class="in-stock"><div class="avali-stock-num" style="word-break: normal"><span data-jlcpcb-element-type="stock">...</span><span data-jlcpcb-element-type="library"></span><br /><a style="display: none" href="#"></a><span style="color: black; white-space: nowrap;" data-jlcpcb-element-type="process"></span></div>' + /*'<div class="avali-stock-tip" style="word-break: normal">at&nbsp;JLC</div>*/  '</div></div></div>';
             referenceCellElement.parentNode.insertBefore(cellElement, referenceCellElement);
             trackPageElement(referenceCellElement, "cell");
         }
@@ -739,12 +739,24 @@ var stockCellHandler = function(element)
             {
                 stockNumElement.setAttribute("class", "avali-down");
             }
-            stockNumElement.innerText = partInfo.stockCount;
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=stock]").innerText = partInfo.stockCount;
+            let extendedPart = (partInfo.componentLibraryType ?? "") == "expand";
+            let thPart = (partInfo.assemblyMode ?? "") == "THT";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=library]").innerHTML = extendedPart ? "&nbsp;(E)" : "&nbsp;(B)";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=library]").title = extendedPart ? "Extended library" : "Basic library";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=library]").style.color = extendedPart ? "red" : "blue";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=process]").innerText = thPart ? "TH" : "SMT";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=process]").title = thPart ? "Through Hole (hand soldered)" : "Surface Mount";
+            stockNumElement.querySelector("a").style.display = "inherit";
+            stockNumElement.querySelector("a").innerText = "JLCPCB";
+            stockNumElement.querySelector("a").href = "https://jlcpcb.com/parts/componentSearch?searchTxt=" + encodeURIComponent(partInfo.componentCode);
         }
         else
         {
+            stockNumElement.querySelector("a").style.display = "none";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=process]").innerText = "";
             stockNumElement.setAttribute("class", "avali-down");
-            stockNumElement.innerText = "N/A";
+            stockNumElement.querySelector("span[data-jlcpcb-element-type=stock]").innerText = "N/A";
         }
         resizeColumns();
     });
